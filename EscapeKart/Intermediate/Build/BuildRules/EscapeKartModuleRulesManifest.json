@@ -1,0 +1,8 @@
+{
+	"SourceFiles": [
+		"D:\\Unreal Projects\\EscapeKart\\Source\\EscapeKart\\EscapeKart.Build.cs",
+		"D:\\Unreal Projects\\EscapeKart\\Source\\EscapeKart.Target.cs",
+		"D:\\Unreal Projects\\EscapeKart\\Source\\EscapeKartEditor.Target.cs"
+	],
+	"EngineVersion": "4.27.2"
+}
