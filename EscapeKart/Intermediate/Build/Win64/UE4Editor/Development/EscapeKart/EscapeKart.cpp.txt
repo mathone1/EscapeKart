@@ -1,2 +1,0 @@
-D:\Unreal Projects\EscapeKart\Intermediate\Build\Win64\UE4Editor\Development\EscapeKart\Definitions.EscapeKart.h
-D:\Unreal Projects\EscapeKart\Source\EscapeKart\EscapeKart.h

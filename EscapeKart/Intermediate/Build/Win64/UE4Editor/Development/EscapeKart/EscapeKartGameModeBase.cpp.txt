@@ -1,7 +1,0 @@
-D:\Unreal Projects\EscapeKart\Intermediate\Build\Win64\UE4Editor\Development\EscapeKart\Definitions.EscapeKart.h
-D:\Unreal Projects\EscapeKart\Source\EscapeKart\EscapeKartGameModeBase.h
-D:\EPIC\UE_4.27\Engine\Source\Runtime\Engine\Classes\GameFramework/GameModeBase.h
-D:\EPIC\UE_4.27\Engine\Source\Runtime\Engine\Classes\Engine/ServerStatReplicator.h
-D:\EPIC\UE_4.27\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\ServerStatReplicator.generated.h
-D:\EPIC\UE_4.27\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\GameModeBase.generated.h
-D:\Unreal Projects\EscapeKart\Intermediate\Build\Win64\UE4Editor\Inc\EscapeKart\EscapeKartGameModeBase.generated.h
