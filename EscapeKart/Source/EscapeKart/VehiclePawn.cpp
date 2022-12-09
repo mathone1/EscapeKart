@@ -16,16 +16,22 @@ AVehiclePawn::AVehiclePawn() {
 
 	// Adjust the tire loading
 	Vehicle4W->MinNormalizedTireLoad = 0.0f;
-	Vehicle4W->MinNormalizedTireLoadFiltered = 0.2f;
-	Vehicle4W->MaxNormalizedTireLoad = 2.0f;
-	Vehicle4W->MaxNormalizedTireLoadFiltered = 2.0f;
+	//Vehicle4W->MinNormalizedTireLoadFiltered = 0.2f;
+	//Vehicle4W->MaxNormalizedTireLoad = 2.0f;
+	//Vehicle4W->MaxNormalizedTireLoadFiltered = 2.0f;
+	Vehicle4W->MinNormalizedTireLoadFiltered = 2.0f;
+	Vehicle4W->MaxNormalizedTireLoad = 3.0f;
+	Vehicle4W->MaxNormalizedTireLoadFiltered = 3.0f;
 
 	// Torque setup
-	Vehicle4W->MaxEngineRPM = 12700.0f;
+	Vehicle4W->MaxEngineRPM = 8000000.0f;
 	Vehicle4W->EngineSetup.TorqueCurve.GetRichCurve()->Reset();
-	Vehicle4W->EngineSetup.TorqueCurve.GetRichCurve()->AddKey(0.0f, 400.0f);
-	Vehicle4W->EngineSetup.TorqueCurve.GetRichCurve()->AddKey(2890.0f, 500.0f);
-	Vehicle4W->EngineSetup.TorqueCurve.GetRichCurve()->AddKey(9730.0f, 400.0f);
+	//Vehicle4W->EngineSetup.TorqueCurve.GetRichCurve()->AddKey(0.0f, 38.0f);
+	//Vehicle4W->EngineSetup.TorqueCurve.GetRichCurve()->AddKey(40.0f, 80.0f);
+	//Vehicle4W->EngineSetup.TorqueCurve.GetRichCurve()->AddKey(100.0f, 160.0f);
+	Vehicle4W->EngineSetup.TorqueCurve.GetRichCurve()->AddKey(0.0f, 4000000.0f);
+	Vehicle4W->EngineSetup.TorqueCurve.GetRichCurve()->AddKey(0.1f, 6000000.0f);
+	Vehicle4W->EngineSetup.TorqueCurve.GetRichCurve()->AddKey(0.2f, 8000000.0f);
 
 	// Adjust the steering 
 	Vehicle4W->SteeringCurve.GetRichCurve()->Reset();
@@ -34,7 +40,7 @@ AVehiclePawn::AVehiclePawn() {
 	Vehicle4W->SteeringCurve.GetRichCurve()->AddKey(120.0f, 0.6f);
 
 	Vehicle4W->DifferentialSetup.DifferentialType = EVehicleDifferential4W::LimitedSlip_4W;
-	Vehicle4W->DifferentialSetup.FrontRearSplit = 1;
+	Vehicle4W->DifferentialSetup.FrontRearSplit = 0;
 
 	// Automatic gearbox
 	Vehicle4W->TransmissionSetup.bUseGearAutoBox = true;
@@ -70,6 +76,9 @@ void AVehiclePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	PlayerInputComponent->BindAction("Handbrake", IE_Pressed, this, &AVehiclePawn::onHandbrakePressed);
 	PlayerInputComponent->BindAction("Handbrake", IE_Released, this, &AVehiclePawn::onHandbrakeReleased);
+
+	PlayerInputComponent->BindAction("Accelerate", IE_Pressed, this, &AVehiclePawn::onAcceleratePressed);
+	PlayerInputComponent->BindAction("Accelerate", IE_Released, this, &AVehiclePawn::onAccelerateReleased);
 }
 
 void AVehiclePawn::ApplyThrottle(float Val) {
@@ -98,6 +107,38 @@ void AVehiclePawn::onHandbrakePressed() {
 
 void AVehiclePawn::onHandbrakeReleased() {
 	GetVehicleMovementComponent()->SetHandbrakeInput(false);
+}
+
+void AVehiclePawn::onAcceleratePressed() {
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Accelerate")));
+	if (UWheeledVehicleMovementComponent4W* Vehicle4W = CastChecked<UWheeledVehicleMovementComponent4W>(GetVehicleMovement())) {
+
+		Vehicle4W->MinNormalizedTireLoadFiltered = 4.0f;
+		Vehicle4W->MaxNormalizedTireLoad = 5.0f;
+		Vehicle4W->MaxNormalizedTireLoadFiltered = 5.0f;
+
+		Vehicle4W->EngineSetup.TorqueCurve.GetRichCurve()->Reset();
+		Vehicle4W->EngineSetup.TorqueCurve.GetRichCurve()->AddKey(0.0f, 400.0f);
+		Vehicle4W->EngineSetup.TorqueCurve.GetRichCurve()->AddKey(1.0f, 50000.0f);
+		Vehicle4W->EngineSetup.TorqueCurve.GetRichCurve()->AddKey(2.0f, 400000.0f);
+
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Applied")));
+	}
+}
+
+void AVehiclePawn::onAccelerateReleased() {
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Stop Accelerate")));
+	if (UWheeledVehicleMovementComponent4W* Vehicle4W = CastChecked<UWheeledVehicleMovementComponent4W>(GetVehicleMovement())) {
+
+		Vehicle4W->EngineSetup.TorqueCurve.GetRichCurve()->AddKey(0.0f, 38.0f);
+		Vehicle4W->EngineSetup.TorqueCurve.GetRichCurve()->AddKey(40.0f, 80.0f);
+		Vehicle4W->EngineSetup.TorqueCurve.GetRichCurve()->AddKey(100.0f, 160.0f);
+
+		Vehicle4W->EngineSetup.TorqueCurve.GetRichCurve()->Reset();
+		Vehicle4W->EngineSetup.TorqueCurve.GetRichCurve()->AddKey(0.0f, 8.0f);
+		Vehicle4W->EngineSetup.TorqueCurve.GetRichCurve()->AddKey(10.0f, 18.0f);
+		Vehicle4W->EngineSetup.TorqueCurve.GetRichCurve()->AddKey(20.0f, 22.0f);
+	}
 }
 
 void AVehiclePawn::UpdateInAirControl(float DeltaTime) {

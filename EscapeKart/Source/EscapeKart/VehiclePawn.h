@@ -33,6 +33,10 @@ public:
 	void onHandbrakePressed();
 	void onHandbrakeReleased();
 
+	/*Accelerate*/
+	void onAcceleratePressed();
+	void onAccelerateReleased();
+
 	/*Update in air physics*/
 	void UpdateInAirControl(float DeltaTime);
 
